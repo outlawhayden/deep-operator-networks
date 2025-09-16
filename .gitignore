@@ -218,3 +218,4 @@ __marimo__/
 *.npz
 *.eqx
 *.npy
+*.csv
