@@ -8,15 +8,17 @@ from scipy.integrate import RK45
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import equinox as eqx
+from jax.nn.initializers import variance_scaling
+from jax.nn.initializers import he_normal
 from tqdm import tqdm
 
 seed = 42
 np.random.seed(42)
 key = jax.random.key(seed)
-batch_size = 64
-num_branches = 10
+batch_size = 32
+num_branches = 40
 num_epochs = 10000
-lr = 1e-3
+lr = 1e-4
 
 print("\nconfiguring backend...")
 jax.config.update("jax_platform_name", "metal")
@@ -31,10 +33,10 @@ class Linear(eqx.Module):
     weight: jax.Array
     bias: jax.Array
 
-    def __init__(self, in_size, out_size, key):
+    def __init__(self, in_size, out_size, key, initializer = he_normal()):
         wkey, bkey = jax.random.split(key)
-        self.weight = jax.random.normal(wkey, (out_size, in_size))
-        self.bias = jax.random.normal(bkey, (out_size))
+        self.weight = initializer(wkey, (out_size, in_size), dtype=jnp.float32)
+        self.bias = jnp.zeros((out_size,), dtype=jnp.float32)
 
     def __call__(self, x):
         return self.weight @ x + self.bias
@@ -45,7 +47,7 @@ class MLP(eqx.Module):
     layers: list
     activations: list
 
-    def __init__(self, architecture, key, activation = jax.nn.relu):
+    def __init__(self, architecture, key, activation = jax.nn.relu, initializer = he_normal()):
         """
         architecture: [in, hidden1, hidden2, ..., out]
         key: random key
@@ -53,7 +55,7 @@ class MLP(eqx.Module):
         """
         keys = jax.random.split(key, len(architecture) - 1)
         self.layers = [
-            Linear(architecture[i], architecture[i+1], keys[i]) for i in range(len(architecture) - 1)]
+            Linear(architecture[i], architecture[i+1], keys[i], initializer = initializer) for i in range(len(architecture) - 1)]
         self.activations = [activation] * (len(self.layers) - 1) + [eqx.nn.Identity()] # no activation on last layer
 
     def __call__(self, x):
@@ -66,10 +68,10 @@ class DeepONet(eqx.Module):
     branch: MLP
     trunk: MLP
 
-    def __init__(self, branch_arch, trunk_arch, key, num_branches, activation=jax.nn.relu,): 
+    def __init__(self, branch_arch, trunk_arch, key, num_branches, activation=jax.nn.relu, initializer = he_normal()): 
         bkey, tkey = jax.random.split(key)
-        self.branch = MLP(branch_arch, bkey, activation)
-        self.trunk = MLP(trunk_arch, tkey, activation)
+        self.branch = MLP(branch_arch, bkey, activation, initializer = initializer)
+        self.trunk = MLP(trunk_arch, tkey, activation, initializer = initializer)
 
     def __call__(self, x):
         u, y = x
@@ -140,8 +142,10 @@ def eval_step(model, x, y):
 u_dim = u_vectors.shape[1]
 y_dim = 1
 # define architectures for component networks
-branch_arch = [u_dim, 2650, 2650,  num_branches]
-trunk_arch = [y_dim, 2650, 2650, num_branches]
+branch_arch = [u_dim, 40, 40,  num_branches]
+trunk_arch = [y_dim, 40, 40, num_branches]
+
+
 
 # model definition
 print(f"initializing model, b_arch: {branch_arch}, t_arch: {trunk_arch}, num_branches: {num_branches}")
@@ -150,8 +154,10 @@ try:
     print("model initialized\n")
 except:
     print("error initializing model\n")
-# optimizer - adam optax builtin
-optimizer = optax.adam(lr)
+# optimizer - adam optax builtin. chain with gradient clipping
+optimizer = optax.chain(
+    optax.clip_by_global_norm(1.0),
+    optax.adam(lr))
 opt_state = optimizer.init(eqx.filter(model, eqx.is_inexact_array))
 
 train_hist, test_hist = [],[]
@@ -182,3 +188,5 @@ except:
 
 # package export loss values
 np.savez("deeponet_losses.npz", train=np.array(train_hist), test=np.array(test_hist))
+
+

@@ -14,10 +14,10 @@ from scipy.integrate import cumulative_trapezoid
 
 seed = 42
 np.random.seed(42)
-n_traj = 1000 # number of initial conditions
+n_traj = 10000 # number of initial conditions
 n_points = 100 # number of samples on domain
 length_scale = 0.25 # smoothness of ICs
-variance = 2.0 # variance of ICs
+variance = 1.0 # variance of ICs
 x_left = 0
 x_right = 1
 
