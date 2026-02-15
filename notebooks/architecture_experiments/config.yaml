@@ -1,0 +1,58 @@
+# Configuration file for operator network training
+
+# Random seed
+seed: 42
+
+# Model parameters
+num_bases: 10
+trunk_arch: [2, 40, 40, 10]
+branch_arch: [2, 60, 60, 10]
+
+# Training parameters
+num_trunk_epochs: 6000
+num_LBFGS_epochs: 1000
+lr: 0.001
+eps: 0.00000001
+
+# Dataset parameters
+dataset_path: "/Users/haydenoutlaw/Doc# Configuration file for operator network training
+
+# Random seed
+seed: 42
+
+# GPU index
+gpu_idx: 4
+
+# Model parameters
+num_bases: 10
+trunk_arch: [2, 40, 40, 10]
+branch_arch: [2, 60, 60, 60, 10]
+
+# Training parameters
+num_trunk_epochs: 200000
+num_LBFGS_epochs: 1
+lr: 0.001
+eps: 0.00000001
+
+# Dataset parameters
+dataset_path: 
+test_size: 0.2
+
+# Output parameters (left blank for multiple models)
+# save_path:
+
+# Logging parameters
+log_frequency: 10
+lbfgs_log_frequency: 1000
+
+# classic [9]
+# 2 step [4]
+# 2 step td [8]
+test_size: 0.2
+
+# Output parameters
+save_path: "factors.npz"
+
+# Logging parameters
+log_frequency: 10
+lbfgs_log_frequency: 100
