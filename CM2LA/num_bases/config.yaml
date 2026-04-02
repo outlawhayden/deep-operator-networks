@@ -1,0 +1,37 @@
+# Configuration file for operator network training
+
+seed: 42
+
+# GPU index
+gpu_idx: 8
+# Model parameters
+num_bases: 4
+trunk_arch: [2, 60, 60, 10]
+branch_arch: [2, 40, 40, 10]
+
+# Training parameters
+num_trunk_epochs: 500000 # both trunk and branch training iteration
+num_LBFGS_epochs: 1000
+lr_start: 0.03
+lr_transition_steps: 5000
+lr_decay_rate: 0.95
+lr_end: 0.0003
+eps: 0.00000001
+
+# Dataset parameters
+dataset_path: "/home/yeonjongshin/houtlaw/architecture_experiments/burgers_dataset.npz"
+test_size: 0.95
+
+# Output parameters (left blank for multiple models)
+# save_path:
+
+# Logging parameters
+log_frequency: 10000
+lbfgs_log_frequency: 1000
+
+# classic [2]
+# classic td [5]
+# 2 step [7]
+# 2 step td [8]
+
+# 3,6,7

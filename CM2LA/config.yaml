@@ -1,22 +1,21 @@
 # Configuration file for operator network training
 
-# Random seed
 seed: 42
 
 # GPU index
-gpu_idx: 6
+gpu_idx: 7
 # Model parameters
 num_bases: 4
-trunk_arch: [2, 60, 60, 60, 10]
-branch_arch: [2, 40, 40, 10]
+trunk_arch: [2, 60, 60, 4]
+branch_arch: [2, 40, 40, 4]
 
 # Training parameters
-num_trunk_epochs: 2000000 # both trunk and branch training iteration
-num_LBFGS_epochs: 1000
+num_trunk_epochs: 500000 # both trunk and branch training iteration
+num_LBFGS_epochs: 100
 lr_start: 0.001
-lr_transition_steps: 40000
+lr_transition_steps: 5000
 lr_decay_rate: 0.95
-lr_end: 0.000001
+lr_end: 0.0000003
 eps: 0.00000001
 
 # Dataset parameters

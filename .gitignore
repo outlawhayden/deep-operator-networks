@@ -220,3 +220,4 @@ __marimo__/
 *.npy
 *.csv
 *.p
+*.h5
