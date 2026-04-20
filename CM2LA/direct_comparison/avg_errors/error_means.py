@@ -133,7 +133,7 @@ def train_orth(u_train, output_tr, u_test, s_test, key):
         if float(loss) < best_loss:
             best_loss  = float(loss)
             best_model = model
-        if step % 500 == 0:
+        if step % 10000 == 0:
             print(f"  step {step}/{num_trunk_epochs}  loss={float(loss):.4e}"); import sys; sys.stdout.flush()
     model = best_model
 
@@ -178,7 +178,7 @@ def train_orth(u_train, output_tr, u_test, s_test, key):
         if float(loss) < best_loss:
             best_loss   = float(loss)
             best_branch = branch_model
-        if step % 500 == 0:
+        if step % 10000 == 0:
             print(f"  step {step}/{num_trunk_epochs}  loss={float(loss):.4e}"); import sys; sys.stdout.flush()
     branch_model = best_branch
 
@@ -225,14 +225,14 @@ def train_orth_td(u_train, output_tr, u_test, s_test, key):
         updates, opt_state = opt.update(grads, opt_state, model)
         return eqx.apply_updates(model, updates), opt_state, loss
 
-    best_model = model
+    best_model = model 
     best_loss  = np.inf
     for step in range(num_trunk_epochs):
         model, opt_state, loss = train_step(model, opt_state)
         if float(loss) < best_loss:
             best_loss  = float(loss)
             best_model = model
-        if step % 500 == 0:
+        if step % 10000 == 0:
             print(f"  step {step}/{num_trunk_epochs}  loss={float(loss):.4e}"); import sys; sys.stdout.flush()
     model = best_model
 
@@ -290,7 +290,7 @@ def train_orth_td(u_train, output_tr, u_test, s_test, key):
         if float(loss) < best_loss:
             best_loss   = float(loss)
             best_branch = branch_model
-        if step % 500 == 0:
+        if step % 10000 == 0:
             print(f"  step {step}/{num_trunk_epochs}  loss={float(loss):.4e}"); import sys; sys.stdout.flush()
     branch_model = best_branch
 

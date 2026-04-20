@@ -1,0 +1,78 @@
+
+configuring backend...
+backend selected:
+ gpu
+active devices:
+ [CudaDevice(id=0)]
+--------------------
+
+
+========== CLASSIC ==========
+
+Traceback (most recent call last):
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/interpreters/pxla.py", line 2729, in _cached_compilation
+    xla_executable = compiler.compile_or_get_cached(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/compiler.py", line 452, in compile_or_get_cached
+    return _compile_and_write_cache(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/compiler.py", line 653, in _compile_and_write_cache
+    executable = backend_compile(
+                 ^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/profiler.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/compiler.py", line 309, in backend_compile
+    raise e
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/compiler.py", line 303, in backend_compile
+    return backend.compile(built_c, compile_options=options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jaxlib.xla_extension.XlaRuntimeError: INTERNAL: ptxas exited with non-zero error code 2, output: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yeonjongshin/houtlaw/architecture_experiments/direct_comparison/direct_comparison_test.py", line 192, in <module>
+    classic_model, opt_state_c, loss = classic_train_step(classic_model, opt_state_c)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/equinox/_jit.py", line 275, in __call__
+    return self._call(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/equinox/_module.py", line 1096, in __call__
+    return self.__func__(self.__self__, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/equinox/_jit.py", line 244, in _call
+    marker, _, _ = out = self._cached(
+                         ^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/traceback_util.py", line 180, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/pjit.py", line 337, in cache_miss
+    pgle_profiler) = _python_pjit_helper(fun, jit_info, *args, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/pjit.py", line 195, in _python_pjit_helper
+    out_flat, compiled, profiler = _pjit_call_impl_python(*args_flat, **p.params)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/pjit.py", line 1672, in _pjit_call_impl_python
+    ).compile()
+      ^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/interpreters/pxla.py", line 2415, in compile
+    executable = UnloadedMeshExecutable.from_hlo(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/interpreters/pxla.py", line 2923, in from_hlo
+    xla_executable = _cached_compilation(
+                     ^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/interpreters/pxla.py", line 2726, in _cached_compilation
+    with dispatch.log_elapsed_time(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/contextlib.py", line 141, in __exit__
+    def __exit__(self, typ, value, traceback):
+
+KeyboardInterrupt
+Exception ignored in atexit callback: <function clean_up at 0x149fd64f6f20>
+Traceback (most recent call last):
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/api.py", line 2787, in clean_up
+    clear_backends()
+  File "/home/yeonjongshin/miniconda3/envs/envML/lib/python3.12/site-packages/jax/_src/api.py", line 2777, in clear_backends
+    pjit._infer_params_cached.cache_clear()
+KeyboardInterrupt: 

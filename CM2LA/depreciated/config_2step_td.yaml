@@ -1,0 +1,37 @@
+seed: 42
+
+# GPU index
+gpu_idx: 9
+# Model parameters
+num_bases: 4
+trunk_arch: [2, 100, 100, 100, 100, 4]
+branch_arch: [2, 16, 16, 16, 16, 4]
+
+# Training parameters
+num_trunk_epochs: 15000 # both trunk and branch training iteration
+num_LBFGS_epochs: 0
+lr_start: 0.001
+lr_transition_steps: 5000
+lr_decay_rate: 1 # NO DECAY FOR NOW
+lr_end: 0.0000003
+eps: 0.00000001
+
+# Dataset parameters
+dataset_path: "/Users/haydenoutlaw/Documents/Research/opnet/deep-operator-networks/CM2LA/burgers_dataset.npz"
+test_size: 0.2 # 0.2
+
+# Output parameters (left blank for multiple models)
+# save_path:
+
+# Logging parameters
+log_frequency: 1000
+lbfgs_log_frequency: 1000
+
+results_dir: 'results_2step_td'
+
+# classic [2]
+# classic td [5]
+# 2 step [7]
+# 2 step td [8]
+
+# 3,6,7

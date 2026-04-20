@@ -30,8 +30,8 @@ log_frequency: 10000
 lbfgs_log_frequency: 1000
 
 # stat experiment params
-num_trials: 500
-results_path: trial_l2_errors.npz
+num_trials: 100
+results_path: trial_l2_errors_2.npz
 
 # classic [2]
 # classic td [5]

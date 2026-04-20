@@ -205,26 +205,26 @@ e_time = time.time()
 print(f"\nfinal adam loss: {loss:.3e}, total time: {e_time-s_time:.2f}s\n")
 
 # ── Classic LBFGS ──────────────────────────────────────────────────────────────
-params_c = eqx.filter(classic_model, eqx.is_inexact_array)
-static_c = jax.tree_util.tree_map(lambda x: None if eqx.is_inexact_array(x) else x, classic_model)
+# params_c = eqx.filter(classic_model, eqx.is_inexact_array)
+# static_c = jax.tree_util.tree_map(lambda x: None if eqx.is_inexact_array(x) else x, classic_model)
 
-frozen_loss_c = jax.jit(lambda p: classic_loss_fn(eqx.combine(p, static_c), u_train, output_tr))
-frozen_l2_c   = jax.jit(lambda p: classic_l2_fn(eqx.combine(p, static_c),   u_train, output_tr))
+# frozen_loss_c = jax.jit(lambda p: classic_loss_fn(eqx.combine(p, static_c), u_train, output_tr))
+# frozen_l2_c   = jax.jit(lambda p: classic_l2_fn(eqx.combine(p, static_c),   u_train, output_tr))
 
-_ = frozen_loss_c(params_c); jax.block_until_ready(_)
-print("frozen_loss compiled")
+# _ = frozen_loss_c(params_c); jax.block_until_ready(_)
+# print("frozen_loss compiled")
 
-lbfgs_c = LBFGS(fun=frozen_loss_c, maxiter=num_LBFGS_epochs, tol=1e-9, history_size=20, implicit_diff=True, stepsize=-1.0)
-s_time = time.time()
-print(f"LBFGS start loss: {float(frozen_loss_c(params_c)):.3e}")
-params_c, lbfgs_state_c = lbfgs_c.run(params_c)
-e_time = time.time()
-print(f"LBFGS final loss: {float(lbfgs_state_c.value):.3e}, total time: {e_time-s_time:.2f}s\n")
+# lbfgs_c = LBFGS(fun=frozen_loss_c, maxiter=num_LBFGS_epochs, tol=1e-9, history_size=20, implicit_diff=True, stepsize=-1.0)
+# s_time = time.time()
+# print(f"LBFGS start loss: {float(frozen_loss_c(params_c)):.3e}")
+# params_c, lbfgs_state_c = lbfgs_c.run(params_c)
+# e_time = time.time()
+# print(f"LBFGS final loss: {float(lbfgs_state_c.value):.3e}, total time: {e_time-s_time:.2f}s\n")
 
-classic_loss_hist.append(float(lbfgs_state_c.value))
-classic_min_loss_hist.append(min(classic_min_loss_hist[-1], float(lbfgs_state_c.value)))
-classic_l2_hist.append(float(frozen_l2_c(params_c)))
-classic_model = eqx.combine(params_c, static_c)
+# classic_loss_hist.append(float(lbfgs_state_c.value))
+# classic_min_loss_hist.append(min(classic_min_loss_hist[-1], float(lbfgs_state_c.value)))
+# classic_l2_hist.append(float(frozen_l2_c(params_c)))
+# classic_model = eqx.combine(params_c, static_c)
 classic_best  = classic_model
 
 
@@ -292,26 +292,26 @@ e_time = time.time()
 print(f"\nfinal adam loss: {loss:.3e}, total time: {e_time-s_time:.2f}s\n")
 
 # ── Orth Stage 1 LBFGS ────────────────────────────────────────────────────────
-params_o = eqx.filter(orth_model, eqx.is_inexact_array)
-static_o = jax.tree_util.tree_map(lambda x: None if eqx.is_inexact_array(x) else x, orth_model)
+# params_o = eqx.filter(orth_model, eqx.is_inexact_array)
+# static_o = jax.tree_util.tree_map(lambda x: None if eqx.is_inexact_array(x) else x, orth_model)
 
-frozen_loss_o = jax.jit(lambda p: orth_loss_fn(eqx.combine(p, static_o), tx_grid, output_tr))
-frozen_l2_o   = jax.jit(lambda p: orth_l2_fn(eqx.combine(p, static_o),   tx_grid, output_tr))
+# frozen_loss_o = jax.jit(lambda p: orth_loss_fn(eqx.combine(p, static_o), tx_grid, output_tr))
+# frozen_l2_o   = jax.jit(lambda p: orth_l2_fn(eqx.combine(p, static_o),   tx_grid, output_tr))
 
-_ = frozen_loss_o(params_o); jax.block_until_ready(_)
-print("frozen_loss compiled")
+# _ = frozen_loss_o(params_o); jax.block_until_ready(_)
+# print("frozen_loss compiled")
 
-lbfgs_o = LBFGS(fun=frozen_loss_o, maxiter=num_LBFGS_epochs, tol=1e-9, history_size=20, implicit_diff=True, stepsize=-1.0)
-s_time = time.time()
-print(f"LBFGS start loss: {float(frozen_loss_o(params_o)):.3e}")
-params_o, lbfgs_state_o = lbfgs_o.run(params_o)
-e_time = time.time()
-print(f"LBFGS final loss: {float(lbfgs_state_o.value):.3e}, total time: {e_time-s_time:.2f}s\n")
+# lbfgs_o = LBFGS(fun=frozen_loss_o, maxiter=num_LBFGS_epochs, tol=1e-9, history_size=20, implicit_diff=True, stepsize=-1.0)
+# s_time = time.time()
+# print(f"LBFGS start loss: {float(frozen_loss_o(params_o)):.3e}")
+# params_o, lbfgs_state_o = lbfgs_o.run(params_o)
+# e_time = time.time()
+# print(f"LBFGS final loss: {float(lbfgs_state_o.value):.3e}, total time: {e_time-s_time:.2f}s\n")
 
-orth_loss_hist.append(float(lbfgs_state_o.value))
-orth_min_loss_hist.append(min(orth_min_loss_hist[-1], float(lbfgs_state_o.value)))
-orth_l2_hist.append(float(frozen_l2_o(params_o)))
-orth_model = eqx.combine(params_o, static_o)
+# orth_loss_hist.append(float(lbfgs_state_o.value))
+# orth_min_loss_hist.append(min(orth_min_loss_hist[-1], float(lbfgs_state_o.value)))
+# orth_l2_hist.append(float(frozen_l2_o(params_o)))
+# orth_model = eqx.combine(params_o, static_o)
 orth_best  = orth_model
 
 # ── Orth QR Factorization ─────────────────────────────────────────────────────
@@ -434,27 +434,9 @@ for step in range(num_trunk_epochs):
 e_time = time.time()
 print(f"\nfinal adam loss: {loss:.3e}, total time: {e_time-s_time:.2f}s\n")
 
-# ── TD Stage 1 LBFGS ──────────────────────────────────────────────────────────
-params_td = eqx.filter(td_model, eqx.is_inexact_array)
-static_td = jax.tree_util.tree_map(lambda x: None if eqx.is_inexact_array(x) else x, td_model)
 
-frozen_loss_td = jax.jit(lambda p: td_loss_fn(eqx.combine(p, static_td)))
-frozen_l2_td   = jax.jit(lambda p: td_l2_fn(eqx.combine(p, static_td)))
 
-_ = frozen_loss_td(params_td); jax.block_until_ready(_)
-print("frozen_loss compiled")
 
-lbfgs_td = LBFGS(fun=frozen_loss_td, maxiter=num_LBFGS_epochs, tol=1e-9, history_size=20, implicit_diff=True, stepsize=-1.0)
-s_time = time.time()
-print(f"LBFGS start loss: {float(frozen_loss_td(params_td)):.3e}")
-params_td, lbfgs_state_td = lbfgs_td.run(params_td)
-e_time = time.time()
-print(f"LBFGS final loss: {float(lbfgs_state_td.value):.3e}, total time: {e_time-s_time:.2f}s\n")
-
-td_loss_hist.append(float(lbfgs_state_td.value))
-td_min_loss_hist.append(min(td_min_loss_hist[-1], float(lbfgs_state_td.value)))
-td_l2_hist.append(float(frozen_l2_td(params_td)))
-td_model = eqx.combine(params_td, static_td)
 td_best  = td_model
 
 # ── TD QR Factorization with Sign Correction ──────────────────────────────────
@@ -628,59 +610,59 @@ cbar_ax = fig.add_axes([0.91, 0.15, 0.02, 0.7])
 fig.colorbar(im0, cax=cbar_ax, label="pred - true")
 plt.savefig("compare_errors.png")
 plt.close()
-# ── Plot 4: First 4 basis functions (shared color scale) ──────────────────────
+# ── Plot 4: basis functions (shared color scale) ──────────────────────
 # Classic: raw trunk outputs T_k(t,x)
 T_MAT_classic = jax.vmap(classic_trunk_f)(tx_grid)  # (T*X, K)
-bases_classic  = np.array(T_MAT_classic[:, :4].reshape(len(t_grid), len(x_grid), 4))
+bases_classic  = np.array(T_MAT_classic[:, :num_bases].reshape(len(t_grid), len(x_grid), num_bases))
 
 # Orth: Q columns reshaped to (T, X, K)
-bases_orth = np.array(Q_orth[:, :4].reshape(len(t_grid), len(x_grid), 4))
+bases_orth = np.array(Q_orth[:, :num_bases].reshape(len(t_grid), len(x_grid), num_bases))
 
 # Orth TD: Q_sign columns already (T, X, K)
-bases_td = Q_sign[:, :, :4]  # (T, X, 4)
+bases_td = Q_sign[:, :, :num_bases]  # (T, X, num_bases)
 
 T_mesh, X_mesh = np.meshgrid(t_grid, x_grid, indexing="ij")
 
-fig, axes = plt.subplots(3, 4, figsize=(20, 12), constrained_layout=True)
+fig, axes = plt.subplots(3, num_bases, figsize=(20, 12), constrained_layout=True)
 row_labels = ["Classic", "Orth 2-Step", "Orth TD 2-Step"]
 row_bases  = [bases_classic, bases_orth, bases_td]
 
 for row, (label, bases) in enumerate(zip(row_labels, row_bases)):
     bmax_row = float(np.abs(bases).max())
     bmin_row = -bmax_row
-    for k in range(4):
+    for k in range(num_bases):
         im = axes[row, k].contourf(
             T_mesh, X_mesh, bases[:, :, k],
-            levels=100, cmap='plasma', vmin=0, vmax=bmax_row
+            levels=100, cmap='viridis', vmin=0, vmax=bmax_row
         )
         axes[row, k].set_title(f"{label} — basis {k}", fontsize=10)
         axes[row, k].set_xlabel("t")
         axes[row, k].set_ylabel("x")
     fig.colorbar(im, ax=axes[row, :].tolist(), shrink=0.6, label=f"{label} basis value")
 
-fig.suptitle("First 4 Basis Functions by Model", fontsize=16)
+fig.suptitle("Basis Functions by Model", fontsize=16)
 plt.savefig("compare_bases.png")
 plt.close()
 
 
-# ── Plot 5: First 4 basis functions — two-step models only ───────────────────
-fig, axes = plt.subplots(2, 4, figsize=(20, 8), constrained_layout=True)
+# ── Plot 5: basis functions — two-step models only ───────────────────
+fig, axes = plt.subplots(2, num_bases, figsize=(20, 8), constrained_layout=True)
 twostep_labels = ["Orth 2-Step", "Orth TD 2-Step"]
 twostep_bases  = [bases_orth, bases_td]
 
 for row, (label, bases) in enumerate(zip(twostep_labels, twostep_bases)):
     bmax_row = float(np.abs(bases).max())
-    for k in range(4):
+    for k in range(num_bases):
         im = axes[row, k].contourf(
             T_mesh, X_mesh, bases[:, :, k],
-            levels=100, cmap='plasma', vmin=0, vmax=bmax_row
+            levels=100, cmap='viridis', vmin=0, vmax=bmax_row
         )
         axes[row, k].set_title(f"{label} — basis {k}", fontsize=10)
         axes[row, k].set_xlabel("t")
         axes[row, k].set_ylabel("x")
     fig.colorbar(im, ax=axes[row, :].tolist(), shrink=0.6, label=f"{label} basis value")
 
-fig.suptitle("First 4 Basis Functions — Two-Step Models", fontsize=16)
+fig.suptitle("Basis Functions — Two-Step Models", fontsize=16)
 plt.savefig("compare_twostep_bases.png")
 plt.close()
 
@@ -703,6 +685,89 @@ cbar_ax = fig.add_axes([0.91, 0.15, 0.02, 0.7])
 fig.colorbar(im0, cax=cbar_ax, label="pred - true")
 plt.savefig("compare_twostep_errors.png")
 plt.close()
+
+
+# ── Plot 7: Test MSE Histogram — Two-Step Models ──────────────────────────────
+def compute_test_mse_per_sample(Q_mat, branch_model, u_test, s_test, is_td=False):
+    mses = []
+    for i in range(len(u_test)):
+        u_i = u_test[i]
+        s_i = s_test[i]  # (T, X)
+        if is_td:
+            pred = td_predict(jnp.asarray(Q_mat), branch_model, u_i)
+        else:
+            pred = orth_predict(Q_mat, branch_model, u_i)
+        mse = float(jnp.mean((pred - s_i) ** 2))
+        mses.append(mse)
+    return np.array(mses)
+
+mse_orth = compute_test_mse_per_sample(Q_orth, orth_branch, u_train, s_train, is_td=False) ## NOW ON TRAINING DATA, NOT ON TESTING DATA
+mse_td   = compute_test_mse_per_sample(Q_sign, td_branch,   u_train, s_train, is_td=True)
+
+log_mse_orth = np.log10(mse_orth)
+log_mse_td   = np.log10(mse_td)
+
+bins = np.linspace(
+    min(log_mse_orth.min(), log_mse_td.min()),
+    max(log_mse_orth.max(), log_mse_td.max()),
+    40
+)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.hist(log_mse_orth, bins=bins, alpha=0.55, label="Orth 2-Step",    color="steelblue")
+ax.hist(log_mse_td,   bins=bins, alpha=0.55, label="Orth TD 2-Step", color="darkorange")
+ax.axvline(np.mean(log_mse_orth), color="steelblue",  linestyle="--", linewidth=1.5, label=f"Orth mean: {np.mean(log_mse_orth):.2f}")
+ax.axvline(np.mean(log_mse_td),   color="darkorange", linestyle="--", linewidth=1.5, label=f"TD mean:   {np.mean(log_mse_td):.2f}")
+ax.set_xlabel("log$_{10}$(MSE)")
+ax.set_ylabel("Count")
+ax.set_title("Training MSE Distribution — Two-Step Models")
+ax.legend()
+plt.tight_layout()
+plt.savefig("compare_twostep_test_mse_hist.png")
+plt.close()
+
+
+# ── Plot 8: Mean MSE Across Time — Two-Step Models ───────────────────────────
+def compute_mse_per_timestep(Q_mat, branch_model, u_test, s_test, is_td=False):
+    # returns array of shape (T,)
+    all_preds = []
+    for i in range(len(u_test)):
+        u_i = u_test[i]
+        if is_td:
+            pred = td_predict(jnp.asarray(Q_mat), branch_model, u_i)
+        else:
+            pred = orth_predict(Q_mat, branch_model, u_i)
+        all_preds.append(np.array(pred))  # (T, X)
+    all_preds = np.stack(all_preds, axis=0)  # (N, T, X)
+    s_test_np = np.array(s_test)             # (N, T, X)
+    return np.mean((all_preds - s_test_np) ** 2, axis=(0, 2))  # (T,)
+
+mse_orth_t = compute_mse_per_timestep(Q_orth, orth_branch, u_train, s_train, is_td=False) # NOW ON TRAINING DATA, NOT ON TESTING DATA
+mse_td_t   = compute_mse_per_timestep(Q_sign, td_branch,   u_train, s_train, is_td=True)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.semilogy(np.array(t_grid), mse_orth_t, label="Orth 2-Step",    color="steelblue")
+ax.semilogy(np.array(t_grid), mse_td_t,   label="Orth TD 2-Step", color="darkorange")
+ax.set_xlabel("t")
+ax.set_ylabel("Mean MSE")
+ax.set_title("Mean Training MSE Across Time — Two-Step Models")
+ax.legend()
+plt.tight_layout()
+plt.savefig("compare_twostep_mse_over_time.png")
+plt.close()
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.semilogy(classic_min_loss_hist[1:],  label="Classic (joint)",   color="forestgreen")
+ax.semilogy(orth_min_loss_hist[1:],     label="Orth 2-Step (stage 1)",    color="steelblue")
+ax.semilogy(td_min_loss_hist[1:],       label="Orth TD 2-Step (stage 1)", color="darkorange")
+ax.set_xlabel("step")
+ax.set_ylabel("Min MSE")
+ax.set_title("Stage 1 Min Training MSE — All Models")
+ax.legend()
+plt.tight_layout()
+plt.savefig("compare_stage1_min_mse.png")
+plt.close()
+
 
 
 # ── Total Runtime ──────────────────────────────────────────────────────────────

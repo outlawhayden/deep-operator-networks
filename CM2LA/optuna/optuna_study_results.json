@@ -607,6 +607,69 @@
         "lr_decay_rate_branch": 0.7039124665701244,
         "lr_end_branch": 1.2494160347062359e-05
       }
+    },
+    {
+      "number": 28,
+      "value": 0.18982994556427002,
+      "state": "TrialState.COMPLETE",
+      "params": {
+        "n_trunk_hidden": 3,
+        "trunk_hidden_size": 256,
+        "n_branch_hidden": 2,
+        "branch_hidden_size": 128,
+        "num_trunk_epochs": 750000,
+        "num_LBFGS_epochs": 8000,
+        "lr_start": 0.00943657368426306,
+        "lr_transition_steps": 8000,
+        "lr_decay_rate": 0.7246611557869319,
+        "lr_end": 6.471811534094863e-06,
+        "lr_start_branch": 0.01798616931899832,
+        "lr_transition_steps_branch": 4000,
+        "lr_decay_rate_branch": 0.9219936170410046,
+        "lr_end_branch": 2.0144412777070106e-06
+      }
+    },
+    {
+      "number": 29,
+      "value": 0.26552248001098633,
+      "state": "TrialState.COMPLETE",
+      "params": {
+        "n_trunk_hidden": 4,
+        "trunk_hidden_size": 256,
+        "n_branch_hidden": 1,
+        "branch_hidden_size": 128,
+        "num_trunk_epochs": 750000,
+        "num_LBFGS_epochs": 7000,
+        "lr_start": 0.007843296268768245,
+        "lr_transition_steps": 8000,
+        "lr_decay_rate": 0.6425213796670652,
+        "lr_end": 6.94410913566683e-06,
+        "lr_start_branch": 0.020626105671879086,
+        "lr_transition_steps_branch": 3000,
+        "lr_decay_rate_branch": 0.8604925090110114,
+        "lr_end_branch": 1.003071351868127e-06
+      }
+    },
+    {
+      "number": 30,
+      "value": 0.2039526402950287,
+      "state": "TrialState.COMPLETE",
+      "params": {
+        "n_trunk_hidden": 3,
+        "trunk_hidden_size": 256,
+        "n_branch_hidden": 2,
+        "branch_hidden_size": 128,
+        "num_trunk_epochs": 750000,
+        "num_LBFGS_epochs": 5000,
+        "lr_start": 0.006225057261790611,
+        "lr_transition_steps": 6000,
+        "lr_decay_rate": 0.7174017745415929,
+        "lr_end": 3.3450878990963295e-06,
+        "lr_start_branch": 0.07306790455330499,
+        "lr_transition_steps_branch": 5000,
+        "lr_decay_rate_branch": 0.910400626153592,
+        "lr_end_branch": 1.956084650293717e-06
+      }
     }
   ]
 }

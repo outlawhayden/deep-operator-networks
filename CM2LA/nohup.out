@@ -1,0 +1,94 @@
+WARNING:2026-04-15 13:30:23,043:jax._src.xla_bridge:1018: Platform 'METAL' is experimental and not all JAX functionality may be correctly supported!
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+W0000 00:00:1776274223.044136 13778818 mps_client.cc:510] WARNING: JAX Apple GPU support is experimental and not all JAX functionality is correctly supported!
+Metal device set to: Apple M1 Pro
+I0000 00:00:1776274223.063033 13778818 service.cc:145] XLA service 0x16090f140 initialized for platform METAL (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1776274223.063047 13778818 service.cc:153]   StreamExecutor device (0): Metal, <undefined>
+I0000 00:00:1776274223.064409 13778818 mps_client.cc:406] Using Simple allocator.
+I0000 00:00:1776274223.064423 13778818 mps_client.cc:384] XLA backend will use up to 11452858368 bytes on device 0 for SimpleAllocator.
+
+configuring backend...
+backend selected:
+ METAL
+active devices:
+ [METAL(id=0)]
+--------------------
+
+Adam step 0: loss=1.394e-01, 0.90sAdam step 1000: loss=1.229e-01, 52.39s
+systemMemory: 16.00 GB
+maxCacheSize: 5.33 GB
+
+Traceback (most recent call last):
+  File "/Users/haydenoutlaw/Documents/Research/opnet/deep-operator-networks/CM2LA/deeponet_classic.py", line 244, in <module>
+    l2_hist.append(float(l2_fn(model, u_train, output_tr)))  # diagnostic, not used in training
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/Documents/Research/opnet/deep-operator-networks/CM2LA/deeponet_classic.py", line 204, in l2_fn
+    T_MAT    = jax.vmap(trunk_model)(tx_grid)       # (T*X, K)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/traceback_util.py", line 180, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/api.py", line 999, in vmap_f
+    out_flat = batching.batch(
+               ^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/linear_util.py", line 192, in call_wrapped
+    return self.f_transformed(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/interpreters/batching.py", line 589, in _batch_outer
+    outs, trace = f(tag, in_dims, *in_vals)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/interpreters/batching.py", line 604, in _batch_inner
+    outs = f(*in_tracers)
+           ^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/interpreters/batching.py", line 333, in flatten_fun_for_vmap
+    ans = f(*py_args, **py_kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/Documents/Research/opnet/deep-operator-networks/CM2LA/deeponet_classic.py", line 119, in __call__
+    x = act(layer(x))
+        ^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/nn/functions.py", line 457, in gelu
+    cdf = 0.5 * (1.0 + jnp.tanh(sqrt_2_over_pi * (x_arr + 0.044715 * (x_arr ** 3))))
+                                                          ~~~~~~~~~^~~~~~~~~~~~~~
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/numpy/array_methods.py", line 1061, in op
+    return getattr(self.aval, f"_{name}")(self, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/numpy/array_methods.py", line 578, in deferring_binary_op
+    return binary_op(*args)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/numpy/ufunc_api.py", line 179, in __call__
+    return call(*args)
+           ^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/traceback_util.py", line 180, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/pjit.py", line 340, in cache_miss
+    pgle_profiler) = _python_pjit_helper(fun, jit_info, *args, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/pjit.py", line 200, in _python_pjit_helper
+    out_flat = pjit_p.bind(*args_flat, **p.params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/core.py", line 463, in bind
+    return self.bind_with_trace(prev_trace, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/core.py", line 468, in bind_with_trace
+    return trace.process_primitive(self, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/interpreters/batching.py", line 474, in process_primitive
+    val_out, dim_out = fancy_primitive_batchers[p](self.axis_data, vals_in, dims_in, **params)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/pjit.py", line 1994, in _pjit_batcher
+    vals_out = pjit_p.bind(
+               ^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/core.py", line 463, in bind
+    return self.bind_with_trace(prev_trace, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/core.py", line 468, in bind_with_trace
+    return trace.process_primitive(self, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/core.py", line 954, in process_primitive
+    return primitive.impl(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/haydenoutlaw/anaconda3/envs/jax/lib/python3.12/site-packages/jax/_src/pjit.py", line 1762, in _pjit_call_impl
+    return xc._xla.pjit(
+           ^^^^^^^^^^^^^
+KeyboardInterrupt
