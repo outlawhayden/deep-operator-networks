@@ -19,7 +19,7 @@ import functools as ft
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-from equinox_module import training_MODEL, create_FNN, save_MODEL, load_FNN
+from depreciated.course_script.equinox_module import training_MODEL, create_FNN, save_MODEL, load_FNN
 
 SEED = 42
 
